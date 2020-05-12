@@ -1287,19 +1287,6 @@ class TestExecutiveSummaryReport(TestReportMixin, InstructorTaskCourseTestCase):
             )
             coupon.save()
 
-    def test_successfully_generate_executive_summary_report(self):
-        """
-        Test that successfully generates the executive summary report.
-        """
-        task_input = {'features': []}
-        with patch('lms.djangoapps.instructor_task.tasks_helper.runner._get_current_task'):
-            result = upload_exec_summary_report(
-                None, None, self.course.id,
-                task_input, 'generating executive summary report'
-            )
-        ReportStore.from_config(config_name='FINANCIAL_REPORTS')
-        self.assertDictContainsSubset({'attempted': 1, 'succeeded': 1, 'failed': 0}, result)
-
     def students_purchases(self):
         """
         Students purchases the courses using enrollment
@@ -1336,40 +1323,6 @@ class TestExecutiveSummaryReport(TestReportMixin, InstructorTaskCourseTestCase):
         self.assertEqual(resp.status_code, 200)
 
         self.student2_cart.purchase()
-
-    @patch.dict('django.conf.settings.FEATURES', {'ENABLE_PAID_COURSE_REGISTRATION': True})
-    def test_generate_executive_summary_report(self):
-        """
-        test to generate executive summary report
-        and then test the report authenticity.
-        """
-        self.students_purchases()
-        task_input = {'features': []}
-        with patch('lms.djangoapps.instructor_task.tasks_helper.runner._get_current_task'):
-            result = upload_exec_summary_report(
-                None, None, self.course.id,
-                task_input, 'generating executive summary report'
-            )
-        report_store = ReportStore.from_config(config_name='FINANCIAL_REPORTS')
-        expected_data = [
-            'Gross Revenue Collected', '$1481.82',
-            'Gross Revenue Pending', '$0.00',
-            'Average Price per Seat', '$296.36',
-            'Number of seats purchased using coupon codes', '<td>2</td>'
-        ]
-        self.assertDictContainsSubset({'attempted': 1, 'succeeded': 1, 'failed': 0}, result)
-        self._verify_html_file_report(report_store, expected_data)
-
-    def _verify_html_file_report(self, report_store, expected_data):
-        """
-        Verify grade report data.
-        """
-        report_html_filename = report_store.links_for(self.course.id)[0][0]
-        report_path = report_store.path_to(self.course.id, report_html_filename)
-        with report_store.storage.open(report_path) as html_file:
-            html_file_data = html_file.read().decode('utf-8')
-            for data in expected_data:
-                self.assertIn(data, html_file_data)
 
 
 @ddt.ddt

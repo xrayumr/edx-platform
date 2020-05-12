@@ -1549,25 +1549,6 @@ def get_enrollment_report(request, course_id):
 @ensure_csrf_cookie
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 @require_level('staff')
-@require_finance_admin
-@common_exceptions_400
-def get_exec_summary_report(request, course_id):
-    """
-    get the executive summary report for the particular course.
-    """
-    course_key = CourseKey.from_string(course_id)
-    report_type = _('executive summary')
-    task_api.submit_executive_summary_report(request, course_key)
-    success_status = SUCCESS_MESSAGE_TEMPLATE.format(report_type=report_type)
-
-    return JsonResponse({"status": success_status})
-
-
-@transaction.non_atomic_requests
-@require_POST
-@ensure_csrf_cookie
-@cache_control(no_cache=True, no_store=True, must_revalidate=True)
-@require_level('staff')
 @common_exceptions_400
 def get_course_survey_results(request, course_id):
     """
