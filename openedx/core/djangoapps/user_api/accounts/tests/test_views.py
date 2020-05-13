@@ -611,10 +611,11 @@ class TestAccountsAPI(CacheIsolationTestCase, UserAPITestCase):
                     u"The about me field must be at most 300 characters long.",
                     error_response.data["field_errors"][field]["user_message"]
                 )
-            self.assertEqual(
-                u'This value is invalid.',
-                error_response.data["field_errors"][field]["user_message"]
-            )
+            else:
+                self.assertEqual(
+                    u'This value is invalid.',
+                    error_response.data["field_errors"][field]["user_message"]
+                )
             self.assertEqual(
                 u"Value '{value}' is not valid for field '{field}': {messages}".format(
                     value=fails_validation_value, field=field, messages=[developer_validation_message]
