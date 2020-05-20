@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from ratelimitbackend.backends import RateLimitMixin
 
+from util.models import LoginRateLimitConfiguration
+
 
 class RequestRateLimiter(RateLimitMixin):
     """
@@ -101,3 +103,18 @@ class PasswordResetEmailRateLimiter(RequestRateLimiter):
         """
         for key in self.keys_to_check(request):
             self.cache_incr(key)
+
+
+class LoginAndRegisterRateLimiter(RequestRateLimiter):
+    """
+    Rate limiting backend for login and register endpoint which
+    allows 50 requests per IP for every 5 minutes.
+    """
+    cache_prefix = 'loginandregister-'
+
+    def __init__(self, *args, **kwargs):
+        super(LoginAndRegisterRateLimiter, self).__init__(*args, **kwargs)
+
+        ratelimit_config = LoginRateLimitConfiguration.current()
+        if ratelimit_config.enabled:
+            self.requests = ratelimit_config.requests
