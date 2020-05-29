@@ -65,7 +65,7 @@ git+https://github.com/edx/MongoDBProxy.git@d92bafe9888d2940f647a7b2b2383b29c752
 
 # Underscore template extractor for django-babel/enmerkar
 # This fork adds django>1.11 and django<3 compatibility.
-git+https://github.com/edx/django-babel-underscore.git@37705f7377a4d0a4e673f1431895ce28a8860cd7#egg=django-babel-underscore==0.6.0
+git+https://github.com/edx/enmerkar-underscore.git@e861d3f616b09d6e96fffe75bf7a7ba75447762d#egg=enmerkar-underscore==1.0.0
 
 # Internationalization utilities
 # Our django-babel-underscore fork above does not yet work with the newer enmerkar PyPI releases (BOM-1637)
