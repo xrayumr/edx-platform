@@ -532,7 +532,7 @@ class VideosHandlerTestCase(VideoUploadTestMixin, CourseTestCase):
 
         self.assertEqual(response.status_code, 200)
         mock_conn.return_value.get_bucket.assert_called_once_with(
-            settings.VIDEO_UPLOAD_PIPELINE['VEM_S3_BUCKET'], validate=False # pylint: disable=unsubscriptable-object
+            settings.VIDEO_UPLOAD_PIPELINE['VEM_S3_BUCKET'], validate=False  # pylint: disable=unsubscriptable-object
         )
 
     @override_settings(AWS_ACCESS_KEY_ID='test_key_id', AWS_SECRET_ACCESS_KEY='test_secret')
