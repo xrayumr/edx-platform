@@ -9,7 +9,7 @@ from xmodule.modulestore.tests.django_utils import ModuleStoreTestCase
 
 # Entitlements is not in CMS' INSTALLED_APPS so these imports will error during test collection
 if settings.ROOT_URLCONF == 'lms.urls':
-    from entitlements.api.v1.serializers import CourseEntitlementSerializer
+    from entitlements.rest_api.v1.serializers import CourseEntitlementSerializer
     from entitlements.tests.factories import CourseEntitlementFactory
 
 

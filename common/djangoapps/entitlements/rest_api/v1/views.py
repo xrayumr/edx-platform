@@ -15,9 +15,9 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 
 from course_modes.models import CourseMode
-from entitlements.api.v1.filters import CourseEntitlementFilter
-from entitlements.api.v1.permissions import IsAdminOrSupportOrAuthenticatedReadOnly
-from entitlements.api.v1.serializers import CourseEntitlementSerializer
+from entitlements.rest_api.v1.filters import CourseEntitlementFilter
+from entitlements.rest_api.v1.permissions import IsAdminOrSupportOrAuthenticatedReadOnly
+from entitlements.rest_api.v1.serializers import CourseEntitlementSerializer
 from entitlements.models import CourseEntitlement, CourseEntitlementPolicy, CourseEntitlementSupportDetail
 from entitlements.utils import is_course_run_entitlement_fulfillable
 from openedx.core.djangoapps.catalog.utils import get_course_runs_for_course, get_owners_for_course
