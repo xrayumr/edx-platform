@@ -807,7 +807,8 @@ def videos_post(course, request):
 
 def storage_service_bucket(course_key=None):
     """
-    Returns an S3 bucket for video uploads.
+    Returns an S3 bucket for video upload. The S3 bucket returned depends on
+    which pipeline, VEDA or VEM, is enabled.
     """
     if waffle_flags()[ENABLE_DEVSTACK_VIDEO_UPLOADS].is_enabled():
         credentials = AssumeRole.get_instance().credentials

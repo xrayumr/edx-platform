@@ -473,9 +473,6 @@ class VideosHandlerTestCase(VideoUploadTestMixin, CourseTestCase):
             'secret_key': 'test_secret',
             'session_token': 'test_session_token'
         }
-
-        bucket = Mock()
-        mock_conn.return_value = Mock(get_bucket=Mock(return_value=bucket))
         mock_key_instances = [
             Mock(
                 generate_url=Mock(
@@ -484,7 +481,7 @@ class VideosHandlerTestCase(VideoUploadTestMixin, CourseTestCase):
             )
             for file_info in files
         ]
-        mock_key.side_effect = mock_key_instances + [Mock()]
+        mock_key.side_effect = mock_key_instances
 
         with patch.object(AssumeRole, 'get_instance') as assume_role:
             assume_role.return_value.credentials = credentials
@@ -510,10 +507,6 @@ class VideosHandlerTestCase(VideoUploadTestMixin, CourseTestCase):
         Test that if VEM pipeline is enabled, objects are uploaded to the correct s3 bucket
         """
         files = [{'file_name': 'first.mp4', 'content_type': 'video/mp4'}]
-
-        bucket = Mock()
-        mock_conn.return_value = Mock()
-        mock_conn.return_value.get_bucket = Mock(return_value=bucket)
         mock_key_instances = [
             Mock(
                 generate_url=Mock(
@@ -522,7 +515,7 @@ class VideosHandlerTestCase(VideoUploadTestMixin, CourseTestCase):
             )
             for file_info in files
         ]
-        mock_key.side_effect = mock_key_instances + [Mock()]
+        mock_key.side_effect = mock_key_instances
 
         response = self.client.post(
             self.url,

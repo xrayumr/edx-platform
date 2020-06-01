@@ -14,7 +14,7 @@ class VideoPipelineMixin(object):
     veda_pipeline_integration_defaults = {
         'enabled': True,
         'api_url': 'https://video-pipeline.example.com/api/v1/',
-        'service_username': u'cms_veda_pipeline_service_user',
+        'service_username': 'cms_veda_pipeline_service_user',
         'client_name': 'veda_pipeline'
     }
 
