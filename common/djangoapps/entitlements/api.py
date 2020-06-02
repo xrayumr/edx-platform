@@ -2,7 +2,7 @@
 Python APIs exposed by the Entitlements app to other in-process apps.
 """
 
-from .models import CourseEntitlement
+from .models import CourseEntitlement as _CourseEntitlement
 
 
 def get_active_entitlement_list_for_user(user):
@@ -13,4 +13,4 @@ def get_active_entitlement_list_for_user(user):
     Returns:
         List: Active entitlements for the provided User.
     """
-    return CourseEntitlement.get_active_entitlements_for_user(user)
+    return _CourseEntitlement.get_active_entitlements_for_user(user)
