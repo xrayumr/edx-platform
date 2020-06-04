@@ -12,7 +12,6 @@
                  AccountSettingsFieldViews, AccountSettingsView, StringUtils, HtmlUtils) {
         return function(
             fieldsData,
-            ordersHistoryData,
             authData,
             passwordResetSupportUrl,
             userAccountsApiUrl,
@@ -30,8 +29,8 @@
             isSecondaryEmailFeatureEnabled
         ) {
             var $accountSettingsElement, userAccountModel, userPreferencesModel, aboutSectionsData,
-                accountsSectionData, ordersSectionData, accountSettingsView, showAccountSettingsPage,
-                showLoadingError, orderNumber, getUserField, userFields, timeZoneDropdownField, countryDropdownField,
+                accountsSectionData, accountSettingsView, showAccountSettingsPage,
+                showLoadingError, getUserField, userFields, timeZoneDropdownField, countryDropdownField,
                 emailFieldView, secondaryEmailFieldView, accountDeletionFields, platformData,
                 aboutSectionMessageType, aboutSectionMessage, fullnameFieldView, countryFieldView,
                 fullNameFieldData, emailFieldData, secondaryEmailFieldData, countryFieldData, additionalFields,
@@ -345,41 +344,6 @@
                 }
             ];
 
-            ordersHistoryData.unshift(
-                {
-                    title: gettext('ORDER NAME'),
-                    order_date: gettext('ORDER PLACED'),
-                    price: gettext('TOTAL'),
-                    number: gettext('ORDER NUMBER')
-                }
-            );
-
-            ordersSectionData = [
-                {
-                    title: gettext('My Orders'),
-                    subtitle: StringUtils.interpolate(
-                        gettext('This page contains information about orders that you have placed with {platform_name}.'),  // eslint-disable-line max-len
-                        {platform_name: platformName}
-                    ),
-                    fields: _.map(ordersHistoryData, function(order) {
-                        orderNumber = order.number;
-                        if (orderNumber === 'ORDER NUMBER') {
-                            orderNumber = 'orderId';
-                        }
-                        return {
-                            view: new AccountSettingsFieldViews.OrderHistoryFieldView({
-                                totalPrice: order.price,
-                                orderId: order.number,
-                                orderDate: order.order_date,
-                                receiptUrl: order.receipt_url,
-                                valueAttribute: 'order-' + orderNumber,
-                                lines: order.lines
-                            })
-                        };
-                    })
-                }
-            ];
-
             accountSettingsView = new AccountSettingsView({
                 model: userAccountModel,
                 accountUserId: accountUserId,
@@ -387,7 +351,6 @@
                 tabSections: {
                     aboutTabSections: aboutSectionsData,
                     accountsTabSections: accountsSectionData,
-                    ordersTabSections: ordersSectionData
                 },
                 userPreferencesModel: userPreferencesModel
             });
