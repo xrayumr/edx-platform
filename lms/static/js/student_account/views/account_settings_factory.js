@@ -29,11 +29,11 @@
             isSecondaryEmailFeatureEnabled
         ) {
             var $accountSettingsElement, userAccountModel, userPreferencesModel, aboutSectionsData,
-                accountsSectionData, accountSettingsView, showAccountSettingsPage,
+                accountSettingsView, showAccountSettingsPage,
                 showLoadingError, getUserField, userFields, timeZoneDropdownField, countryDropdownField,
                 emailFieldView, secondaryEmailFieldView, accountDeletionFields, platformData,
                 aboutSectionMessageType, aboutSectionMessage, fullnameFieldView, countryFieldView,
-                fullNameFieldData, emailFieldData, secondaryEmailFieldData, countryFieldData, additionalFields,
+                fullNameFieldData, emailFieldData, secondaryEmailFieldData, countryFieldData,
                 fieldItem, emailFieldViewIndex;
 
             $accountSettingsElement = $('.wrapper-account-settings');
@@ -198,47 +198,6 @@
                         }
                     ]
                 },
-                {
-                    title: gettext('Additional Information'),
-                    fields: [
-                        {
-                            view: new AccountSettingsFieldViews.DropdownFieldView({
-                                model: userAccountModel,
-                                title: gettext('Education Completed'),
-                                valueAttribute: 'level_of_education',
-                                options: fieldsData.level_of_education.options,
-                                persistChanges: true
-                            })
-                        },
-                        {
-                            view: new AccountSettingsFieldViews.DropdownFieldView({
-                                model: userAccountModel,
-                                title: gettext('Gender'),
-                                valueAttribute: 'gender',
-                                options: fieldsData.gender.options,
-                                persistChanges: true
-                            })
-                        },
-                        {
-                            view: new AccountSettingsFieldViews.DropdownFieldView({
-                                model: userAccountModel,
-                                title: gettext('Year of Birth'),
-                                valueAttribute: 'year_of_birth',
-                                options: fieldsData.year_of_birth.options,
-                                persistChanges: true
-                            })
-                        },
-                        {
-                            view: new AccountSettingsFieldViews.LanguageProficienciesFieldView({
-                                model: userAccountModel,
-                                title: gettext('Preferred Language'),
-                                valueAttribute: 'language_proficiencies',
-                                options: fieldsData.preferred_language.options,
-                                persistChanges: true
-                            })
-                        }
-                    ]
-                }
             ];
 
 			// Secondary email address
@@ -263,37 +222,6 @@
                 emailFieldViewIndex + 1, 0, secondaryEmailFieldView
                 )
             }
-
-            // Add the extended profile fields
-            additionalFields = aboutSectionsData[1];
-            for (var field in extendedProfileFields) {  // eslint-disable-line guard-for-in, no-restricted-syntax, vars-on-top, max-len
-                fieldItem = extendedProfileFields[field];
-                if (fieldItem.field_type === 'TextField') {
-                    additionalFields.fields.push({
-                        view: new AccountSettingsFieldViews.ExtendedFieldTextFieldView({
-                            model: userAccountModel,
-                            title: fieldItem.field_label,
-                            fieldName: fieldItem.field_name,
-                            valueAttribute: 'extended_profile',
-                            persistChanges: true
-                        })
-                    });
-                } else {
-                    if (fieldItem.field_type === 'ListField') {
-                        additionalFields.fields.push({
-                            view: new AccountSettingsFieldViews.ExtendedFieldListFieldView({
-                                model: userAccountModel,
-                                title: fieldItem.field_label,
-                                fieldName: fieldItem.field_name,
-                                options: fieldItem.field_options,
-                                valueAttribute: 'extended_profile',
-                                persistChanges: true
-                            })
-                        });
-                    }
-                }
-            }
-
 
             // Add account deletion fields
             if (displayAccountDeletion) {
@@ -320,37 +248,12 @@
             countryDropdownField = getUserField(userFields, 'country');
             timeZoneDropdownField.listenToCountryView(countryDropdownField);
 
-            accountsSectionData = [
-                {
-                    title: gettext('Linked Accounts'),
-                    subtitle: StringUtils.interpolate(
-                        gettext('You can link your social media accounts to simplify signing in to {platform_name}.'),
-                        {platform_name: platformName}
-                    ),
-                    fields: _.map(authData.providers, function(provider) {
-                        return {
-                            view: new AccountSettingsFieldViews.AuthFieldView({
-                                title: provider.name,
-                                valueAttribute: 'auth-' + provider.id,
-                                helpMessage: '',
-                                connected: provider.connected,
-                                connectUrl: provider.connect_url,
-                                acceptsLogins: provider.accepts_logins,
-                                disconnectUrl: provider.disconnect_url,
-                                platformName: platformName
-                            })
-                        };
-                    })
-                }
-            ];
-
             accountSettingsView = new AccountSettingsView({
                 model: userAccountModel,
                 accountUserId: accountUserId,
                 el: $accountSettingsElement,
                 tabSections: {
                     aboutTabSections: aboutSectionsData,
-                    accountsTabSections: accountsSectionData,
                 },
                 userPreferencesModel: userPreferencesModel
             });
