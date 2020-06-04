@@ -21,7 +21,6 @@
             platformName,
             contactEmail,
             allowEmailChange,
-            socialPlatforms,
             syncLearnerProfileData,
             enterpriseName,
             enterpriseReadonlyAccountFields,
@@ -33,7 +32,7 @@
             var $accountSettingsElement, userAccountModel, userPreferencesModel, aboutSectionsData,
                 accountsSectionData, ordersSectionData, accountSettingsView, showAccountSettingsPage,
                 showLoadingError, orderNumber, getUserField, userFields, timeZoneDropdownField, countryDropdownField,
-                emailFieldView, secondaryEmailFieldView, socialFields, accountDeletionFields, platformData,
+                emailFieldView, secondaryEmailFieldView, accountDeletionFields, platformData,
                 aboutSectionMessageType, aboutSectionMessage, fullnameFieldView, countryFieldView,
                 fullNameFieldData, emailFieldData, secondaryEmailFieldData, countryFieldData, additionalFields,
                 fieldItem, emailFieldViewIndex;
@@ -296,34 +295,6 @@
                 }
             }
 
-
-            // Add the social link fields
-            socialFields = {
-                title: gettext('Social Media Links'),
-                subtitle: gettext('Optionally, link your personal accounts to the social media icons on your edX profile.'),  // eslint-disable-line max-len
-                fields: []
-            };
-
-            for (var socialPlatform in socialPlatforms) {  // eslint-disable-line guard-for-in, no-restricted-syntax, vars-on-top, max-len
-                platformData = socialPlatforms[socialPlatform];
-                socialFields.fields.push(
-                    {
-                        view: new AccountSettingsFieldViews.SocialLinkTextFieldView({
-                            model: userAccountModel,
-                            title: gettext(platformData.display_name + ' Link'),
-                            valueAttribute: 'social_links',
-                            helpMessage: gettext(
-                                'Enter your ' + platformData.display_name + ' username or the URL to your ' +
-                                platformData.display_name + ' page. Delete the URL to remove the link.'
-                            ),
-                            platform: socialPlatform,
-                            persistChanges: true,
-                            placeholder: platformData.example
-                        })
-                    }
-                );
-            }
-            aboutSectionsData.push(socialFields);
 
             // Add account deletion fields
             if (displayAccountDeletion) {
